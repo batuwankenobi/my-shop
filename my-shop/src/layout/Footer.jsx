@@ -1,16 +1,19 @@
-import Button from '../components/Button';
+import Button from '../components/Button'
+
+
 
 function Footer() {
-	const handleClick = () => {
-		alert('You clicked me!');
-	};
-	return (
-		<main className='text-left flex flex-col justify-center'>
-		    <div>
-			  <h3 className='text-h3'>Bendage</h3>
-			  <img src="/images/social-image.png" alt="social icons" />
-		    </div>
-		    <article>
+    const handleClick = () => {
+        alert("Button clicked!");
+      };
+
+    return (
+        <main className='text-left flex flex-col justify-center'>
+            <div>
+                <h3 className='text-h3'>Bendage</h3>
+                <img src="/images/social-image.png" alt="social icons" />
+            </div>
+            <article>
                 <div>
                     <h5 className='text-h5'>Company Info</h5>
                     <div className='text-h6 text-secondText'>
@@ -48,7 +51,7 @@ function Footer() {
                     </div>
                 </div>
             </article>
-		 <section>
+            <section>
                 <h5 className='text-h5'>Get In Touch</h5>
                 <div>
                 <input type="email" className='bg-[#E6E6E6] text-h6 '></input>
