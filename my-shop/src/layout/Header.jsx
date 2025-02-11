@@ -1,29 +1,14 @@
-// import React, { useState } from 'react';
-// import { useHistory } from 'react-router-dom';
+import React, { useState } from 'react'; // React ve useState hook'unu içe aktarıyoruz.
+import { useHistory } from 'react-router-dom'; // Sayfa yönlendirme için useHistory hook'unu içe aktarıyoruz.
 
-// // Navbar bileşeni
-// const Navbar = () => {
-// // Menü açık/kapalı durumu için state tanımlama
-// const [isMenuOpen, setIsMenuOpen] = useState(false);
-// // Sayfa yönlendirme için useHistory hook'unu kullanma
-// const history = useHistory();
-// // Menü öğelerine tıklandığında yönlendirme yapma fonksiyonu
-// const handleNavigation = (path) => {
-// 	setIsMenuOpen(false); // Menü kapat
-// 	history.push(path); // Belirtilen sayfaya yönlendir
-// 	};
-// };
+const Navbar = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false); // Açılır menünün açık/kapalı durumunu yönetmek için state.
+  const history = useHistory(); // Sayfa yönlendirmesi için useHistory hook'unu kullanıyoruz.
 
-function Header() {
-
-	return (
-		<main>
-		  <div>
-			<p>Bandage</p>
-			
-		  </div>
-		</main>
-	);
-}
-
-export default Header;
+  // Menüye tıklanınca sayfa yönlendirmesi ve menüyü kapatma işlemi yapılır.
+  const handleNavigation = (path) => {
+    setIsMenuOpen(false); // Menü kapatılır.
+    history.push(path); // Belirtilen path'e yönlendirme yapılır.
+  };
+  return (
+	<>
