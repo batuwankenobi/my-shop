@@ -42,4 +42,9 @@ const ProductCardList = () => {
 
 	    // Görünen ürün kartlarının sayısını tutan state (başlangıçta 5 ürün gösterilir)
   const [visibleCards, setVisibleCards] = useState(5);
+
+  // "LOAD MORE PRODUCTS" butonuna basıldığında yeni ürünler yükleyen fonksiyon
+  const loadMore = () => {
+	setVisibleCards(visibleCards + 6); // Her tıklamada 6 yeni ürün gösterilecek
+    };
   
