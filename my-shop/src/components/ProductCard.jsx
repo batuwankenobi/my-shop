@@ -17,7 +17,9 @@ const ProductCard = ({ title, subtitle, price, image }) => {
 	  </section>
 	);
     };
-    // Ürün kartlarını listeleyen bileşen
+
+
+ // Ürün kartlarını listeleyen bileşen
 const ProductCardList = () => {
 	// Kullanılacak ürün resimlerinin dizisi
 	const images = [
@@ -27,4 +29,5 @@ const ProductCardList = () => {
 	  './images/ProductCard4.png',
 	  './images/ProductCard5.png',
 	];
-    
+
+	
