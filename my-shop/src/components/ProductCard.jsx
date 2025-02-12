@@ -30,4 +30,16 @@ const ProductCardList = () => {
 	  './images/ProductCard5.png',
 	];
 
-	
+	 // Tüm ürün kartlarını içeren dizi (örnek verilerle oluşturuldu)
+	 const allCards = Array.from({ length: 10 }, (_, index) => ({
+		id: index + 1, // Her karta benzersiz bir ID atanıyor
+		title: `Graphic Design`, // Ürün başlığı
+		subtitle: `English Department`, // Ürün alt başlığı
+		price: `$16.48 $6.48`, // Ürün fiyatı
+		image: images[index % images.length], // Ürün resmi (resim dizisindeki sıraya göre belirleniyor)
+	    }));
+
+
+	    // Görünen ürün kartlarının sayısını tutan state (başlangıçta 5 ürün gösterilir)
+  const [visibleCards, setVisibleCards] = useState(5);
+  
