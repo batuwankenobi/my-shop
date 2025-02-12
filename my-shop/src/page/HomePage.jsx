@@ -1,4 +1,7 @@
-import Footer from '../layout/Footer' // Footer bileşenini içe aktarıyoruz
+import IconList from '../components/IconCard';
+import ProductCard from '../components/ProductCard';
+import Footer from '../layout/Footer'
+import Navbar from '../layout/Header';
 
 // Ana sayfa bileşeni
 function HomePage() {
