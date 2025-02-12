@@ -51,3 +51,21 @@ const IconList = () => {
 	    altText: 'Icon 6',
 	  },
 	];
+
+	return (
+		// Grid yapısı oluşturarak ikonları düzenleyen kapsayıcı div
+		<div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-16">
+		  {/* icons dizisini dönerek her bir ikon için IconCard bileşeni oluşturuluyor */}
+		  {icons.map((icon, index) => (
+		    <IconCard
+			key={index} // React'in her öğeyi benzersiz şekilde takip edebilmesi için key atanıyor
+			imageSrc={icon.imageSrc}
+			link={icon.link}
+			altText={icon.altText}
+		    />
+		  ))}
+		</div>
+	    );
+	  };
+	  
+	  export default IconList;
