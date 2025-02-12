@@ -48,3 +48,9 @@ const ProductCardList = () => {
 	setVisibleCards(visibleCards + 6); // Her tıklamada 6 yeni ürün gösterilecek
     };
   
+
+  return (
+	<div>
+	  {/* Ürün kartlarını ızgara düzeninde göstermek için kullanılan div */}
+	  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-fit">
+		
