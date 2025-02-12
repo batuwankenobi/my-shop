@@ -53,4 +53,14 @@ const ProductCardList = () => {
 	<div>
 	  {/* Ürün kartlarını ızgara düzeninde göstermek için kullanılan div */}
 	  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-fit">
-		
+		 {/* Görünen kartları ekrana basma işlemi */}
+		 {allCards.slice(0, visibleCards).map((card) => (
+          <ProductCard
+            key={card.id} // React'in her elemanı benzersiz şekilde takip etmesi için gerekli
+            title={card.title}
+            subtitle={card.subtitle}
+            price={card.price}
+            image={card.image}
+          />
+        ))}
+      </div>
