@@ -64,3 +64,20 @@ const ProductCardList = () => {
           />
         ))}
       </div>
+	
+	{/* Eğer gösterilen kart sayısı, toplam kart sayısından azsa "LOAD MORE PRODUCTS" butonu gösterilir */}
+      {visibleCards < allCards.length && (
+        <div className="text-center mt-6">
+          <button
+            onClick={loadMore} // Butona tıklanınca loadMore fonksiyonu çağrılır
+            className="py-5 px-12 bg-transparent rounded border-blueText border-2 text-blueText transition duration-300 font-bold text-sm"
+          >
+            LOAD MORE PRODUCTS
+          </button>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default ProductCardList;
