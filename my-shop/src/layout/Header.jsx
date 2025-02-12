@@ -13,75 +13,117 @@ const Navbar = () => {
 
   return (
     <>
-      {/* Navbar alanı */}
-      <nav className="bg-transparent px-4 py-2 flex items-center justify-between">
-        {/* Sol Taraf: Logo veya başlık */}
-        <div className="text-xl font-bold">Bandage</div>
+        {/* Navbar bölümü */}
+        <nav className="bg-transparent px-8 flex items-center justify-between py-8">
+            
+            {/* Sol Taraf - Logo veya Marka İsmi */}
+            <div className="text-xl font-bold">Bandage</div>
 
-        {/* Sağ Taraf: Arama, alışveriş ve menü butonu */}
-        <div className="flex items-center gap-4">
-          {/* Arama ikonu */}
-          <img src='/icons/search.svg' alt="Search" className="w-6 h-6 cursor-pointer" />
+            {/* Sağ Taraf - Menü butonu */}
+            <div className="flex items-center gap-4">
+                <button
+                    className="text-white hover:text-gray-400 focus:outline-none"
+                    onClick={() => setIsMenuOpen(!isMenuOpen)}
+                >
+                    {/* Menü açma/kapatma butonu */}
+                    <img src="/icons/align-right.svg" alt="Menu" className="w-6 h-6" />
+                </button>
+            </div>
+        </nav>
 
-          {/* Alışveriş sepeti ikonu */}
-          <img src="/icons/shopping-cart.svg" alt="Shopping" className="w-6 h-6 cursor-pointer" />
+        {/* Açılır Menü Bölümü */}
+        {isMenuOpen && (
+            <div className="bg-gray-50 w-full py-4 flex flex-col">
+                
+                {/* Menü İçeriği - Sayfa Linkleri */}
+                <ul className='flex flex-col flex-wrap content-center gap-8 text-3xl text-center'>
+                    <li>
+                        <button
+                            onClick={() => handleNavigation('/')}
+                            className="font-bold"
+                        >
+                            Home
+                        </button>
+                    </li>
+                    <li>
+                        <button
+                            onClick={() => handleNavigation('/shop')}
+                            className="text-secondText"
+                        >
+                            Shop
+                        </button>
+                    </li>
+                    <li>
+                        <button
+                            onClick={() => handleNavigation('/About')}
+                            className="text-secondText"
+                        >
+                            About
+                        </button>
+                    </li>
+                    <li>
+                        <button
+                            onClick={() => handleNavigation('/Blog')}
+                            className="text-secondText"
+                        >
+                            Blog
+                        </button>
+                    </li>
+                    <li>
+                        <button
+                            onClick={() => handleNavigation('/contact')}
+                            className="text-secondText"
+                        >
+                            Contact
+                        </button>
+                    </li>
+                    <li>
+                        <button
+                            onClick={() => handleNavigation('/Pages')}
+                            className="text-secondText"
+                        >
+                            Pages
+                        </button>
+                    </li>
+                </ul>
 
-          {/* Menü butonu (Align Right ikonlu) */}
-          <button
-            className="text-white hover:text-gray-400 focus:outline-none"
-            onClick={() => setIsMenuOpen(!isMenuOpen)} // Menü aç/kapat işlevi
-          >
-            <img src="/icons/align-right.svg" alt="Menu" className="w-6 h-6" />
-          </button>
-        </div>
-      </nav>
+                {/* Kullanıcı Giriş ve Kayıt Butonları */}
+                <div>
+                    <div className='text-3xl text-blueText flex justify-center py-4'>
+                        {/* Kullanıcı ikonu */}
+                        <img src='/icons/user.svg' alt='Kullanıcı' className='fill-current text-blueText' />
+                        <button onClick={() => handleNavigation('/login')}>
+                            Login /
+                        </button>
+                        <button onClick={() => handleNavigation('/register')}>
+                            Register
+                        </button>
+                    </div>
 
-      {/* Açılır Menü */}
-      {isMenuOpen && (
-        <div className="bg-gray-50 w-full py-4 flex flex-col">
-          {/* Menü öğeleri */}
-          <ul className='flex flex-col flex-wrap content-center gap-8 text-3xl'>
-            <li>
-              {/* Ana Sayfa */}
-              <button
-                onClick={() => handleNavigation('/')}
-                className="text-secondText"
-              >
-                Home
-              </button>
-            </li>
-            <li>
-              {/* Ürünler Sayfası */}
-              <button
-                onClick={() => handleNavigation('/product')}
-                className="text-secondText"
-              >
-                Product
-              </button>
-            </li>
-            <li>
-              {/* Fiyatlandırma Sayfası */}
-              <button
-                onClick={() => handleNavigation('/pricing')}
-                className="text-secondText"
-              >
-                Pricing
-              </button>
-            </li>
-            <li>
-              {/* İletişim Sayfası */}
-              <button
-                onClick={() => handleNavigation('/contact')}
-                className="text-secondText"
-              >
-                Contact
-              </button>
-            </li>
-          </ul>
-        </div>
-      )}
+                    {/* Arama, Sepet ve Beğeni Butonları */}
+                    <div className='flex flex-col justify-center items-center conta gap-4 py-4'>
+                        
+                        {/* Arama Butonu */}
+                        <button onClick={() => handleNavigation('/search')}>
+                            <img src='/icons/search.svg' alt='search' />
+                        </button>
+
+                        {/* Alışveriş Sepeti Butonu */}
+                        <button onClick={() => handleNavigation('/shopcard')}>
+                            <img src='/icons/shopping-cart.svg' alt='shoppingcart' />
+                        </button>
+
+                        {/* Beğenilenler Butonu */}
+                        <button onClick={() => handleNavigation('/like')}>
+                            <img src='/icons/heart.svg' alt='like' />
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+        )}
     </>
-  );
+);
 };
 
-export default Navbar; // Navbar bileşeni dışa aktarılıyor.
+export default Navbar;
