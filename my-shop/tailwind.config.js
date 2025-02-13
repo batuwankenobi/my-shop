@@ -1,33 +1,44 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
+  darkMode: ["class"],
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
-      backgroundImage: {
-        'custom-gradient': 'linear-gradient(to right, #67e8f9, #5eead4)', // from-cyan-300 to-teal-200
-      },
       colors: {
-        background: '#FFFFFF',
-        primaryText:'#252B42',
-        secondText: '#737373',
-        blueText: '#23A6F0'
+        primary: "#23A6F0",
+        secondary: "#23856D",
+        muted: "#BDBDBD",
+        success: "#2DC071",
+        lightblue: "#8EC2F2",
+        red: "#E74040",
+        lightGray: "#E6E6E6",
+        yellow: "#F3CD03",
+        lightbg: "#FAFAFA",
+        text: {
+          default: "#252B42",
+          secondary: "#737373",
+          light: "#FFFFFF",
+          lightSecondary: "#858585",
+        },
       },
-      fontFamily: {
-        montserrat: ['Montserrat','sans-serif'],
+      container: {
+        center: true,
+        padding: {
+          DEFAULT: "1rem",
+          sm: "1.5rem",
+          md: "2rem",
+          lg: "2.5rem",
+          xl: "3rem",
+        },
+        screens: {
+          sm: "540px",
+          md: "720px",
+          lg: "920px",
+          xl: "1140px",
+          "2xl": "1440px",
+        },
       },
-      fontSize: {
-        'h5': '1rem',
-        'h2': '2.5rem',
-        'h1': '3.5rem',
-        'h3': '1.5rem',
-        'h4': '1.25rem',
-        'h6': '0.875rem'
-      }
     },
   },
-  plugins: [],
-}
-
+  plugins: [require("tailwindcss-animate")],
+};
