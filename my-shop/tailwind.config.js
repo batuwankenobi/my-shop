@@ -1,65 +1,44 @@
 /** @type {import('tailwindcss').Config} */
-
 export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
-  safelist: [
-    "h-[427px]",
-    "h-[300px]"
-  ],
+  darkMode: ["class"],
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    screens: {
-      '2xl': { 'max': '1535px' },
-      // => @media (max-width: 1535px) { ... }
-
-      'xl': { 'max': '1279px' },
-      // => @media (max-width: 1279px) { ... }
-
-      'lg': { 'max': '1023px' },
-      // => @media (max-width: 1023px) { ... }
-
-      'md': { 'max': '767px' },
-      // => @media (max-width: 767px) { ... }
-
-      'sm': { 'max': '639px' },
-      // => @media (max-width: 639px) { ... }
-    },
-    colors: {
-      main: "#252B42",
-      'light-gray-1': "#FAFAFA",
-      'muted-text-color': "#BDBDBD",
-      gray: "#737373",
-      'light-blue': "#8EC2F2",
-      'primary-blue': "#23A6F0",
-      'success-green': "#2DC071",
-      'dark-green': "#23856D"
-    },
     extend: {
-      fontFamily: {
-        'montserrat': ['"Montserrat"'],
+      colors: {
+        primary: "#23A6F0",
+        secondary: "#23856D",
+        muted: "#BDBDBD",
+        success: "#2DC071",
+        lightblue: "#8EC2F2",
+        red: "#E74040",
+        lightGray: "#E6E6E6",
+        yellow: "#F3CD03",
+        lightbg: "#FAFAFA",
+        text: {
+          default: "#252B42",
+          secondary: "#737373",
+          light: "#FFFFFF",
+          lightSecondary: "#858585",
+        },
       },
-      lineHeight: {
-        '5.5': "1.375rem",  //22px
-        '7.5': '1.875rem',  //30px
-        '8': '1.5rem',      //24px
-        '12.5': '3.125rem', //50px
-        '20': '5rem',       //80px
+      container: {
+        center: true,
+        padding: {
+          DEFAULT: "1rem",
+          sm: "1.5rem",
+          md: "2rem",
+          lg: "2.5rem",
+          xl: "3rem",
+        },
+        screens: {
+          sm: "540px",
+          md: "720px",
+          lg: "920px",
+          xl: "1140px",
+          "2xl": "1440px",
+        },
       },
-      maxWidth: {
-        'page-content': '1050px',
-      },
-      fontSize: {
-        '4.5xl': '2.5rem',  //40px 
-        '6xl': '3.625rem'   //58px
-      },
-      borderWidth: {
-        '1': '1px'
-      }
     },
-
   },
-  plugins: [],
-}
-
+  plugins: [require("tailwindcss-animate")],
+};
