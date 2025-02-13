@@ -43,8 +43,9 @@ const CategoryList = () => {
     ];
 
     return (
-        // Kategori kartlarını bir grid içinde sıralıyoruz
-        <section className="grid grid-cols-1 md:grid-cols-3 gap-6 p-8">
+        <>
+        {/* Kartların gruplandırıldığı ana bölüm */}
+        <section className="grid grid-cols-1 md:grid-cols-3 gap-4 justify-items-center sm:grid-cols-2 sm:grid-rows-2 ">
             {categories.map((category, index) => (
                 <CategoryCard
                     key={index} // React için benzersiz anahtar
@@ -54,6 +55,7 @@ const CategoryList = () => {
                 />
             ))}
         </section>
+        </>
     );
 };
 
