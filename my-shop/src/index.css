@@ -2,24 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer components {
-  .footer-titles {
-    @apply text-2xl font-bold leading-8 pb-5;
-  }
-  .product-tabs {
-    @apply text-gray text-sm leading-6 font-semibold cursor-pointer p-6;
-  }
+:root {
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
-  .input-label {
-    @apply text-main w-[450px] sm:w-[300px]
-  }
-  .input-text {
-    @apply border border-[#E6E6E6] rounded py-2 px-4 w-[450px] sm:w-[80%] text-sm text-main leading-7 placeholder:text-gray
-  }
-  .form-line{
-    @apply flex flex-col gap-4
-  }
-  .input-error{
-    @apply text-[#dc143c] text-sm
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  /* border: 1px solid black;*/
+}
+
+@layer base {
+  :root {
+    --radius: 0.5rem;
   }
 }

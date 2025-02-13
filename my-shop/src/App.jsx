@@ -1,38 +1,62 @@
-import { ToastContainer } from 'react-toastify'
-import Header from './layouts/Header'
-import Footer from './layouts/Footer'
-import PageContent from './layouts/PageContent'
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { faInstagram, faFacebook, faTwitter, faLinkedin, faYoutube } from '@fortawesome/free-brands-svg-icons'
-import { faMagnifyingGlass, faCartShopping, faPhone, faChartSimple, faLocationDot, faEye, faBorderAll, faListCheck, faAngleDown, faAngleUp, faBars, faCheck, faX, faXmark, faLeftLong, faTrash, faPlus, faUserLarge, faRightFromBracket, faArrowRight } from '@fortawesome/free-solid-svg-icons'
-import { faUser, faHeart, faEnvelope, faClock } from '@fortawesome/free-regular-svg-icons'
-import { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { autoLoginAction } from './store/actions/UserActions'
-import { fetchCategories } from './store/actions/GlobalActions'
-library.add(faInstagram, faFacebook, faTwitter, faLinkedin, faYoutube, faMagnifyingGlass, faListCheck, faBorderAll, faAngleDown, faAngleUp, faBars, faCheck, faX, faXmark, faLeftLong, faCartShopping, faTrash, faPlus, faUserLarge, faRightFromBracket, faLocationDot, faPhone, faChartSimple, faUser, faHeart, faEnvelope, faClock, faEye, faArrowRight)
+import { Routes, Route } from "react-router-dom";
+import HomePage from "./pages/HomePage.jsx";
+import ShopPage from "./pages/ShopPage.jsx";
+import ProductPage from "./pages/ProductPage.jsx";
+import ContactPage from "./pages/ContactPage.jsx";
+import TeamPage from "./pages/TeamPage.jsx";
+import AboutPage from "./pages/AboutPage.jsx";
+import Layout from "./layout/Layout.jsx";
+import SignUpPage from "./pages/SignUpPage.jsx";
+import LoginPage from "./pages/LoginPage.jsx";
+import { ToastContainer } from "react-toastify";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { fetchProducts, verifyToken } from "./redux/actions/thunkActions.js";
+import PrivateRoute from "./components/privateRoute.jsx";
 function App() {
   const dispatch = useDispatch();
-  const [autoLoginLoading, setAutoLoginLoading] = useState(true)
+
   useEffect(() => {
-    dispatch(autoLoginAction(setAutoLoginLoading));
-    dispatch(fetchCategories());
-  }, [])
-
-  if (autoLoginLoading) return ""
-
+    verifyToken(dispatch);
+  }, [dispatch]);
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, []);
   return (
-    <>
-      <div className='min-h-screen flex flex-col justify-between'>
-        <div>
-          <Header />
-          <PageContent />
-        </div>
-        <Footer />
-      </div>
-      <ToastContainer />
-    </>
-  )
+    <div className="flex flex-col min-h-screen">
+      <Layout>
+        <ToastContainer
+          position="top-right"
+          autoClose={2000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="shop" element={<ShopPage />} />
+          <Route path="products" element={<ProductPage />} />
+          <Route path="products/:id" element={<ProductPage />} />
+          <Route path="contact" element={<ContactPage />} />
+          <Route path="team" element={<TeamPage />} />
+          <Route path="about" element={<AboutPage />} />
+
+          <Route
+            path="signup"
+            element={<PrivateRoute element={SignUpPage} redirectTo="/" />}
+          />
+          <Route
+            path="login"
+            element={<PrivateRoute element={LoginPage} redirectTo="/" />}
+          />
+        </Routes>
+      </Layout>
+    </div>
+  );
 }
 
-export default App
+export default App;
