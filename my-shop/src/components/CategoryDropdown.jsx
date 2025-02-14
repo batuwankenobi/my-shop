@@ -1,61 +1,58 @@
-import { useSelector, useDispatch } from "react-redux"; // Redux hook'ları
-import { Link } from "react-router-dom"; // Sayfa yönlendirme için Link bileşeni
+import { useSelector, useDispatch } from "react-redux"; // Redux ile state yönetimi
+import { Link } from "react-router-dom"; // Sayfa yönlendirme
 import {
   DropdownMenu, // Açılır menü bileşeni
   DropdownMenuContent, // Açılır menü içeriği
   DropdownMenuItem, // Açılır menü öğesi
-  DropdownMenuTrigger, // Açılır menüyü tetikleyen bileşen
+  DropdownMenuTrigger, // Açılır menü tetikleyicisi
 } from "@/components/ui/dropdown-menu";
-import { ChevronDown } from "lucide-react"; // Açılır menü için aşağı ok simgesi
-import createSlug from "../utils/createSlug"; // SEO dostu URL slug oluşturma fonksiyonu
-import { updateCategory } from "../store/actions/productActions"; // Redux aksiyonu: Kategoriyi günceller
+import { ChevronDown } from "lucide-react"; // Aşağı ok simgesi
+import createSlug from "../utils/createSlug"; // URL dostu slug oluşturmak için
+import { updateCategory } from "../store/actions/productActions"; // Redux aksiyonu
 
-// Kategori dropdown bileşeni
+// Kategori Dropdown Menüsü
 const CategoryDropdown = () => {
   const dispatch = useDispatch(); // Redux aksiyonlarını çağırmak için
 
-  // Kullanıcı bir kategoriye tıkladığında Redux store'u güncelle
+  // Kategoriye tıklanınca Redux state'ini günceller
   const handleCategoryClick = (categoryId) => {
     dispatch(updateCategory(categoryId));
   };
 
-  // Redux store'dan kategori listesini çek
+  // Redux store'dan kategorileri alır
   const categories = useSelector((state) => state.product.categories);
 
-  // Kadın kategorilerini filtrele (gender === "k")
+  // Kadın ve erkek kategorilerini ayır
   const femaleCategories = categories.filter(
     (category) => category.gender === "k"
   );
-
-  // Erkek kategorilerini filtrele (gender === "e")
   const maleCategories = categories.filter(
     (category) => category.gender === "e"
   );
 
   return (
     <div className="inline-flex items-center justify-center text-center space-x-0 text-light-gray">
-      {/* Ana "Shop" Linki */}
+      {/* Mağaza Ana Sayfasına Link */}
       <Link to="/shop" className="ml-4 font-semibold">
         Shop
       </Link>
 
-      {/* Açılır menü (Dropdown) */}
+      {/* Dropdown Menü */}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <ChevronDown className="mt-1" /> {/* Açılır menü simgesi */}
         </DropdownMenuTrigger>
-
-        {/* Açılır menü içeriği */}
         <DropdownMenuContent className="p-4 grid grid-cols-2 gap-4">
+          
           {/* Kadın Kategorileri */}
           <div>
             <h4 className="font-semibold text-dark-gray mb-2">Kadın</h4>
             {femaleCategories.map((category) => (
               <DropdownMenuItem key={category.id} asChild>
                 <Link
-                  to={`/shop/kadin/${createSlug(category.title)}/${category.id}`} // SEO dostu slug ile yönlendirme
+                  to={`/shop/kadin/${createSlug(category.title)}/${category.id}`}
                   className="text-dark-gray"
-                  onClick={() => handleCategoryClick(category.id)} // Redux'a kategori ID'sini gönder
+                  onClick={() => handleCategoryClick(category.id)}
                 >
                   {category.title}
                 </Link>
@@ -69,19 +66,20 @@ const CategoryDropdown = () => {
             {maleCategories.map((category) => (
               <DropdownMenuItem key={category.id} asChild>
                 <Link
-                  to={`/shop/erkek/${createSlug(category.title)}/${category.id}`} // SEO dostu slug ile yönlendirme
+                  to={`/shop/erkek/${createSlug(category.title)}/${category.id}`}
                   className="text-dark-gray"
-                  onClick={() => handleCategoryClick(category.id)} // Redux'a kategori ID'sini gönder
+                  onClick={() => handleCategoryClick(category.id)}
                 >
                   {category.title}
                 </Link>
               </DropdownMenuItem>
             ))}
           </div>
+
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
   );
 };
 
-export default CategoryDropdown; // Bileşeni dışa aktar
+export default CategoryDropdown;
