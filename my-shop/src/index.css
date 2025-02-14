@@ -2,18 +2,46 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@layer base {
+  body {
+    @apply text-[#252B42];
+  }
 }
 
-* {
-  margin: 0;
+:root {
+  font-family: Montserrat, sans-serif;
+  margin: 0 auto;
   padding: 0;
+  min-height: 100%;
+  max-width: 100%;
   box-sizing: border-box;
-  /* border: 1px solid black;*/
+  display: flex;
+  overflow-x: hidden;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: white;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.swiper-button-next {
+  right: 8%;
+}
+
+.swiper-button-prev {
+  left: 4%;
+}
+
+@media (min-width: 768px) {
+  .swiper-button-next {
+    right: 2%;
+  }
+
+  .swiper-button-prev {
+    left: 2%;
+  }
 }
 
 @layer base {
