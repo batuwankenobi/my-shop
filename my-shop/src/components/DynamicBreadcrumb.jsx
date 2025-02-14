@@ -5,8 +5,8 @@ import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
-} from "@/components/ui/breadcrumb"; 
-import { ChevronRight } from "lucide-react"; 
+} from "@/components/ui/breadcrumb"; // Adjust the import based on your actual component
+import { ChevronRight } from "lucide-react"; // Adjust the icon import as necessary
 import createSlug from "../utils/createSlug";
 
 function DynamicBreadcrumb({ gender, categoryId }) {

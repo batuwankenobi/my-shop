@@ -1,60 +1,84 @@
-import { Routes, Route } from "react-router-dom";
-import HomePage from "./pages/HomePage.jsx";
-import ShopPage from "./pages/ShopPage.jsx";
-import ProductPage from "./pages/ProductPage.jsx";
-import ContactPage from "./pages/ContactPage.jsx";
-import TeamPage from "./pages/TeamPage.jsx";
-import AboutPage from "./pages/AboutPage.jsx";
-import Layout from "./layout/Layout.jsx";
-import SignUpPage from "./pages/SignUpPage.jsx";
-import LoginPage from "./pages/LoginPage.jsx";
-import { ToastContainer } from "react-toastify";
+import "./App.css";
+import { ToastContainer, toast } from "react-toastify";
+import { Switch, Route, Link } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { fetchProducts, verifyToken } from "./redux/actions/thunkActions.js";
-import PrivateRoute from "./components/privateRoute.jsx";
+import { useDispatch, useSelector } from "react-redux";
+import { setUser, initializeUser } from "./store/actions/clientActions";
+import { fetchCategories, fetchProducts } from "./store/actions/productActions";
+import PrivateRoute from "./components/PrivateRoute";
+
+import HomePage from "./pages/HomePage";
+import ShopPage from "./pages/ShopPage";
+import ProductDetail from "./pages/ProductDetail";
+import ContactPage from "./pages/ContactPage";
+import TeamPage from "./pages/TeamPage";
+import AboutPage from "./pages/AboutPage";
+import SignupPage from "./pages/SignupPage";
+import LoginPage from "./pages/LoginPage";
+import CheckoutPage from "./pages/CheckoutPage";
+import OrderPage from "./pages/OrderPage";
+import Header from "./layout/Header";
+import Footer from "./layout/Footer";
+
+import { Loader2 } from "lucide-react";
+
+import "react-toastify/dist/ReactToastify.css";
+
+import PreviousOrdersPage from "./pages/PreviousOrdersPage";
+import PricingPage from "./pages/PricingPage";
+
 function App() {
   const dispatch = useDispatch();
+  const history = useHistory();
+  const location = useLocation();
+
+  const { isLoading, error } = useSelector((state) => state.client);
+  const { productList, fetchState } = useSelector((state) => state.product);
 
   useEffect(() => {
-    verifyToken(dispatch);
-  }, [dispatch]);
-  useEffect(() => {
-    dispatch(fetchProducts());
-  }, []);
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, [location.pathname]);
+
   return (
-    <div className="flex flex-col min-h-screen">
-      <Layout>
-        <ToastContainer
-          position="top-right"
-          autoClose={2000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
+    <div>
+      <ToastContainer />
+      <Header />
+      {isLoading && (
+        <div className="bg-white">
+          <Loader2 className="mr-2 h-4 w-4 inline animate-spin" />
+          Loading...
+        </div>
+      )}
+      {error && <div className="bg-white">Error: {error}</div>}
+      <Switch>
+        <Route
+          path="/shop/:gender/:categoryName/:categoryId/:nameSlug/:productId"
+          component={ProductDetail}
         />
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="shop" element={<ShopPage />} />
-          <Route path="products" element={<ProductPage />} />
-          <Route path="products/:id" element={<ProductPage />} />
-          <Route path="contact" element={<ContactPage />} />
-          <Route path="team" element={<TeamPage />} />
-          <Route path="about" element={<AboutPage />} />
+        <Route
+          exact
+          path="/shop/:gender/:categoryName/:categoryId"
+          component={ShopPage}
+        />
+        <Route exact path="/shop" component={ShopPage} />
+        <Route exact path="/" component={HomePage} />
 
-          <Route
-            path="signup"
-            element={<PrivateRoute element={SignUpPage} redirectTo="/" />}
-          />
-          <Route
-            path="login"
-            element={<PrivateRoute element={LoginPage} redirectTo="/" />}
-          />
-        </Routes>
-      </Layout>
+        <Route path="/checkout" component={CheckoutPage} />
+        <PrivateRoute path="/order" component={OrderPage} />
+        <PrivateRoute path="/previous-orders" component={PreviousOrdersPage} />
+
+        <Route path="/pricing" component={PricingPage} />
+        <Route path="/contact" component={ContactPage} />
+        <Route path="/team" component={TeamPage} />
+        <Route path="/about" component={AboutPage} />
+        <Route path="/signup" component={SignupPage} />
+        <Route path="/login" component={LoginPage} />
+      </Switch>
+      <Footer />
     </div>
   );
 }

@@ -21,7 +21,7 @@ const ProductCard = ({ product, category }) => {
     history.push(
       `/shop/${category.gender === "k" ? "kadin" : "erkek"}/${createSlug(
         category.title
-      )}/${category.id}/${createSlug(product.name)}/${product.id}`
+      )}/${categorSlugy.id}/${create(product.name)}/${product.id}`
     ); // Kullanıcı ilgili ürün detay sayfasına yönlendirilir
   };
 
