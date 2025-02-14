@@ -1,35 +1,30 @@
 import React from "react";
-import { useSelector } from "react-redux"; // Redux'tan kategori verisini almak için
-import { useHistory } from "react-router-dom"; // Sayfa yönlendirme işlemi için
+import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import {
-  Breadcrumb, // Ekmek kırıntısı bileşeni (navigasyon yolu)
-  BreadcrumbItem, // Her bir ekmek kırıntısı öğesi
-  BreadcrumbLink, // Navigasyon bağlantısı
-} from "@/components/ui/breadcrumb"; // UI bileşenleri (kendi projenize göre yolu güncelleyin)
-import { ChevronRight } from "lucide-react"; // Sağ yönlü ok ikonu
-import createSlug from "../utils/createSlug"; // SEO dostu URL slug oluşturma fonksiyonu
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+} from "@/components/ui/breadcrumb"; 
+import { ChevronRight } from "lucide-react"; 
+import createSlug from "../utils/createSlug";
 
-// Dinamik ekmek kırıntısı (breadcrumb) bileşeni
 function DynamicBreadcrumb({ gender, categoryId }) {
-  const history = useHistory(); // Sayfa yönlendirme fonksiyonu
-
-  // Redux store'dan kategori başlığını çekme
+  const history = useHistory();
   const categoryTitle = useSelector((state) => {
-    // `categoryId`'ye karşılık gelen kategori bulunuyor
+
     const category = state.product.categories.find(
       (cat) => cat.id === parseInt(categoryId)
     );
-    return category ? category.title : ""; // Eğer kategori varsa başlığını döndür, yoksa boş string
+    return category ? category.title : "";
   });
 
-  // Breadcrumb öğelerini dinamik olarak oluşturma
   const getBreadcrumbItems = () => {
     const items = [
-      { label: "Home", path: "/" }, // Ana sayfa bağlantısı
-      { label: "Shop", path: "/shop" }, // Genel mağaza sayfası
+      { label: "Home", path: "/" },
+      { label: "Shop", path: "/shop" },
     ];
 
-    // Eğer gender (cinsiyet) ve kategori başlığı mevcutsa, ekmek kırıntısına ekle
     if (gender && categoryTitle) {
       items.push({
         label: gender === "kadin" ? "Kadın" : "Erkek",
@@ -41,34 +36,32 @@ function DynamicBreadcrumb({ gender, categoryId }) {
       });
     }
 
-    return items; // Oluşturulan breadcrumb listesini döndür
+    return items;
   };
 
-  const breadcrumbItems = getBreadcrumbItems(); // Breadcrumb öğelerini al
+  const breadcrumbItems = getBreadcrumbItems();
 
   return (
-    <Breadcrumb className="flex flex-row items-center space-x-2 text-gray-600">
-      {/* Breadcrumb öğelerini dinamik olarak oluştur */}
+    <Breadcrumb className="flex flex-row">
       {breadcrumbItems.map((item, index) => (
         <React.Fragment key={item.path}>
           <BreadcrumbItem>
             <BreadcrumbLink
-              onClick={() => history.push(item.path)} // Tıklanınca sayfa yönlendirmesi yapar
-              className={`cursor-pointer ${
-                index === breadcrumbItems.length - 1 ? "font-bold" : ""
-              }`}
+              onClick={() => history.push(item.path)}
+              className={
+                index === breadcrumbItems.length - 1
+                  ? "font-bold cursor-pointer"
+                  : "cursor-pointer"
+              }
             >
               {item.label}
             </BreadcrumbLink>
           </BreadcrumbItem>
-          {/* Eğer son öğe değilse, yön işaretini göster */}
-          {index < breadcrumbItems.length - 1 && (
-            <ChevronRight className="w-4 h-4 text-gray-400" />
-          )}
+          {index < breadcrumbItems.length - 1 && <ChevronRight />}
         </React.Fragment>
       ))}
     </Breadcrumb>
   );
 }
 
-export default DynamicBreadcrumb; // Bileşeni dışa aktar
+export default DynamicBreadcrumb;
