@@ -68,9 +68,12 @@ const BreadcrumbSeparator = ({
   <li
     role="presentation"  // Sadece görsel bir bileşen olduğu için `role="presentation"` ekleniyor.
     aria-hidden="true"  // Erişilebilirlik için gizli olarak işaretleniyor.
-    className={cn("[&>svg]:w-3.5 [&>svg]:h-3.5", className)}  // SVG ikonlarının boyutu ayarlanıyor.
+    className={cn(" [&\\>svg]:w-3.5 [&\\>svg]:h-3.5", className)}
+
     {...props}>
-    {children ?? <ChevronRightIcon />}  // Eğer içerik belirtilmezse varsayılan olarak `>` ikonunu kullan.
+    {children ? children : <span>&gt;</span>}
+
+    // Eğer içerik belirtilmezse varsayılan olarak `>` ikonunu kullan.
   </li>
 )
 BreadcrumbSeparator.displayName = "BreadcrumbSeparator"
