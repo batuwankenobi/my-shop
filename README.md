@@ -103,4 +103,4 @@ Push yapın: git push origin feature-xyz
 Bir Pull Request (PR) gönderin 🚀
 
 📩 İletişim & Destek
-Herhangi bir sorunuz veya öneriniz varsa, email@example.com adresinden bana ulaşabilirsiniz.
+Herhangi bir sorunuz veya öneriniz varsa, batuhanbartuu@gmail.com adresinden bana ulaşabilirsiniz.
