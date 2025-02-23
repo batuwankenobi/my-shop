@@ -73,7 +73,7 @@ const BreadcrumbSeparator = ({
     {...props}>
     {children ? children : <span>&gt;</span>}
 
-    // Eğer içerik belirtilmezse varsayılan olarak `>` ikonunu kullan.
+    {/* // Eğer içerik belirtilmezse varsayılan olarak `>` ikonunu kullan. */}
   </li>
 )
 BreadcrumbSeparator.displayName = "BreadcrumbSeparator"
