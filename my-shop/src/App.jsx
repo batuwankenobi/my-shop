@@ -37,6 +37,36 @@ function App() {
   const { productList, fetchState } = useSelector((state) => state.product);
 
   useEffect(() => {
+    console.log("App useEffect running");
+    const token =
+      localStorage.getItem("authToken") || sessionStorage.getItem("authToken");
+    const hasVisitedBefore =
+      localStorage.getItem("hasVisitedBefore") ||
+      sessionStorage.getItem("hasVisitedBefore");
+
+    if (token) {
+      localStorage.setItem("hasVisitedBefore", "true");
+      dispatch(initializeUser());
+    }
+
+    // If this is the first visit and we're on the home page
+    if (!token && !hasVisitedBefore && location.pathname === "/") {
+      sessionStorage.setItem("hasVisitedBefore", "true");
+      history.push("/login");
+      toast.info(
+        "Welcome visitor! Please log in to make the most of your experience.",
+        { autoClose: 3000, theme: "colored" }
+      );
+    } else {
+      // Mark as visited if coming from any other page
+      sessionStorage.setItem("hasVisitedBefore", "true");
+    }
+
+    dispatch(fetchCategories());
+  }, []);
+
+  useEffect(() => {
+    // Scroll to top on route change
     window.scrollTo({
       top: 0,
       behavior: "smooth",
