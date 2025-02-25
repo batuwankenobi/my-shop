@@ -1,13 +1,14 @@
 import "./App.css";
-import { ToastContainer, toast } from "react-toastify";
-import { Switch, Route, Link } from "react-router-dom";
-import { useHistory, useLocation } from "react-router-dom";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { setUser, initializeUser } from "./store/actions/clientActions";
-import { fetchCategories, fetchProducts } from "./store/actions/productActions";
-import PrivateRoute from "./components/PrivateRoute";
+import { ToastContainer, toast } from "react-toastify"; // Bildirimler için react-toastify kullanılıyor
+import { Switch, Route, Link } from "react-router-dom"; // React Router kullanılarak sayfa yönlendirmeleri sağlanıyor
+import { useHistory, useLocation } from "react-router-dom"; // Geçmiş ve konum bilgisi için hooklar ekleniyor
+import { useEffect } from "react"; // useEffect ile yan etkiler (side effects) yönetiliyor
+import { useDispatch, useSelector } from "react-redux"; // Redux ile state yönetimi sağlanıyor
+import { setUser, initializeUser } from "./store/actions/clientActions"; // Kullanıcı işlemleri için aksiyonlar çağırılıyor
+import { fetchCategories, fetchProducts } from "./store/actions/productActions"; // Ürün ve kategori verilerini getirmek için aksiyonlar
+import PrivateRoute from "./components/PrivateRoute"; // Özel (yetkili kullanıcılar için) yönlendirme bileşeni
 
+// Sayfa bileşenleri içe aktarılıyor
 import HomePage from "./pages/HomePage";
 import ShopPage from "./pages/ShopPage";
 import ProductDetail from "./pages/ProductDetail";
@@ -20,24 +21,24 @@ import CheckoutPage from "./pages/CheckoutPage";
 import OrderPage from "./pages/OrderPage";
 import Header from "./layout/Header";
 import Footer from "./layout/Footer";
-
-import { Loader2 } from "lucide-react";
-
-import "react-toastify/dist/ReactToastify.css";
-
 import PreviousOrdersPage from "./pages/PreviousOrdersPage";
 import PricingPage from "./pages/PricingPage";
 
-function App() {
-  const dispatch = useDispatch();
-  const history = useHistory();
-  const location = useLocation();
+import { Loader2 } from "lucide-react"; // Yükleme simgesi
+import "react-toastify/dist/ReactToastify.css"; // React-toastify için gerekli CSS dosyası
 
+function App() {
+  const dispatch = useDispatch(); // Redux aksiyonlarını çağırmak için kullanılıyor
+  const history = useHistory(); // Sayfa yönlendirmeleri için
+  const location = useLocation(); // Mevcut sayfanın URL bilgisini almak için
+
+  // Redux store'dan kullanıcı ve ürün bilgilerini çekiyoruz
   const { isLoading, error } = useSelector((state) => state.client);
   const { productList, fetchState } = useSelector((state) => state.product);
 
   useEffect(() => {
     console.log("App useEffect running");
+    // Kullanıcının giriş yapıp yapmadığını kontrol etmek için token bilgisi alınıyor
     const token =
       localStorage.getItem("authToken") || sessionStorage.getItem("authToken");
     const hasVisitedBefore =
@@ -45,11 +46,12 @@ function App() {
       sessionStorage.getItem("hasVisitedBefore");
 
     if (token) {
+      // Kullanıcı giriş yaptıysa ziyaret edildi bilgisini kaydet
       localStorage.setItem("hasVisitedBefore", "true");
-      dispatch(initializeUser());
+      dispatch(initializeUser()); // Kullanıcı bilgilerini Redux store'a yükle
     }
 
-    // If this is the first visit and we're on the home page
+    // Eğer kullanıcı ilk defa ziyaret ediyorsa ve giriş yapmamışsa, giriş sayfasına yönlendir
     if (!token && !hasVisitedBefore && location.pathname === "/") {
       sessionStorage.setItem("hasVisitedBefore", "true");
       history.push("/login");
@@ -58,15 +60,15 @@ function App() {
         { autoClose: 3000, theme: "colored" }
       );
     } else {
-      // Mark as visited if coming from any other page
+      // Ziyaret edildi olarak işaretle
       sessionStorage.setItem("hasVisitedBefore", "true");
     }
 
-    dispatch(fetchCategories());
+    dispatch(fetchCategories()); // Kategori verilerini Redux store'a çek
   }, []);
 
   useEffect(() => {
-    // Scroll to top on route change
+    // Sayfa değiştiğinde en üste kaydır
     window.scrollTo({
       top: 0,
       behavior: "smooth",
@@ -75,15 +77,22 @@ function App() {
 
   return (
     <div>
+      {/* Toast bildirimi göstermek için */}
       <ToastContainer />
+      {/* Sayfa üst menüsü */}
       <Header />
+
+      {/* Yüklenme durumu */}
       {isLoading && (
         <div className="bg-white">
           <Loader2 className="mr-2 h-4 w-4 inline animate-spin" />
           Loading...
         </div>
       )}
+      {/* Hata mesajı */}
       {error && <div className="bg-white">Error: {error}</div>}
+
+      {/* Sayfa yönlendirme yapısı */}
       <Switch>
         <Route
           path="/shop/:gender/:categoryName/:categoryId/:nameSlug/:productId"
@@ -108,6 +117,8 @@ function App() {
         <Route path="/signup" component={SignupPage} />
         <Route path="/login" component={LoginPage} />
       </Switch>
+
+      {/* Sayfa alt menüsü */}
       <Footer />
     </div>
   );
