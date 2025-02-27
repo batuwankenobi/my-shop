@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
-import { useParams, useLocation, useHistory } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import ProductCard from "../components/ProductCard";
-import { Card, CardContent } from "@/components/ui/card";
+import { useParams, useLocation, useHistory } from "react-router-dom"; // URL parametrelerini almak ve yönlendirme yapmak için hooklar
+import { useSelector, useDispatch } from "react-redux"; // Redux state'ini almak ve aksiyon dispatch etmek için
+import ProductCard from "../components/ProductCard"; // Ürün kartı bileşeni
+import { Card, CardContent } from "@/components/ui/card"; // UI bileşenleri
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -12,13 +12,15 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { LayoutGrid, List, ChevronRight, Filter } from "lucide-react";
+} from "@/components/ui/select"; // Seçim kutusu bileşeni
+import { LayoutGrid, List, ChevronRight, Filter } from "lucide-react"; // İkonlar için Lucide kütüphanesi
 import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
-} from "@/components/ui/breadcrumb";
+} from "@/components/ui/breadcrumb"; // Breadcrumb bileşeni
+
+// Redux aksiyonları
 import {
   updateFilter,
   updateSort,
@@ -28,24 +30,23 @@ import {
   setCurrentPage,
 } from "../store/actions/productActions";
 
-import BrandLogos from "../components/BrandLogos";
-
-import { Loader2 } from "lucide-react";
-import { ShopPagination } from "../components/ShopPagination";
-import { selectProductsWithCategories } from "../store/selectors/selectProductsWithCategories";
-import createSlug from "../utils/createSlug";
-import ProductGrid from "../components/ProductGrid";
-import DynamicBreadcrumb from "../components/DynamicBreadcrumb";
-import { set } from "react-hook-form";
+import BrandLogos from "../components/BrandLogos"; // Marka logolarını içeren bileşen
+import { Loader2 } from "lucide-react"; // Yükleme animasyonu ikonu
+import { ShopPagination } from "../components/ShopPagination"; // Sayfalama bileşeni
+import { selectProductsWithCategories } from "../store/selectors/selectProductsWithCategories"; // Ürünleri kategorilerle eşleştiren selector
+import createSlug from "../utils/createSlug"; // URL dostu slug oluşturmak için yardımcı fonksiyon
+import ProductGrid from "../components/ProductGrid"; // Ürünleri listelemek için grid bileşeni
+import DynamicBreadcrumb from "../components/DynamicBreadcrumb"; // Dinamik breadcrumb bileşeni
 
 const ShopPage = () => {
   const dispatch = useDispatch();
-  const { gender, categoryName, categoryId } = useParams();
-  const location = useLocation();
-  const history = useHistory();
+  const { gender, categoryName, categoryId } = useParams(); // URL'den parametreleri al
+  const location = useLocation(); // Mevcut sayfanın konumunu al
+  const history = useHistory(); // Sayfa yönlendirme için kullanılır
 
-  const [showMobileFilters, setShowMobileFilters] = useState(false);
+  const [showMobileFilters, setShowMobileFilters] = useState(false); // Mobil filtrelerin görünürlüğünü kontrol eden state
 
+  // Redux store'dan ürün ve kategori verilerini çek
   const {
     productList,
     total,
@@ -59,33 +60,32 @@ const ShopPage = () => {
     category,
   } = useSelector((state) => state.product);
 
+  // Ürünleri kategorilerle eşleştir
   const productsWithCategories = selectProductsWithCategories(
     productList,
     categories
   );
 
+  // Sayfa /shop ise, kategori seçimini sıfırla
   useEffect(() => {
     if (location.pathname === "/shop") {
-      // Reset category to null when we're back on /shop
-      dispatch(initializeShopPage()); // Or directly set the state to null if not using Redux
+      dispatch(initializeShopPage());
     }
   }, [location, dispatch]);
 
-  // Sort categories by rating and take top 5
+  // En yüksek puanlı ilk 5 kategoriyi al
   const topCategories = [...categories]
     .sort((a, b) => b.rating - a.rating)
     .slice(0, 5);
 
-  // Handle category selection
+  // Kategori seçildiğinde çalışacak fonksiyon
   const handleCategoryChange = async (categoryId, gender, categoryTitle) => {
-    const slug = createSlug(categoryTitle);
-    history.push(
-      `/shop/${gender === "k" ? "kadin" : "erkek"}/${slug}/${categoryId}`
-    );
-    dispatch(updateCategory(categoryId));
+    const slug = createSlug(categoryTitle); // Kategori başlığını slug formatına dönüştür
+    history.push(`/shop/${gender === "k" ? "kadin" : "erkek"}/${slug}/${categoryId}`);
+    dispatch(updateCategory(categoryId)); // Redux store'daki kategori bilgisini güncelle
   };
 
-  // Handle filter input
+  // Filtreleme işlemlerini gecikmeli olarak yapmak için debounce fonksiyonu
   const debounce = (func, delay) => {
     let timeoutId;
     return (...args) => {
@@ -94,6 +94,7 @@ const ShopPage = () => {
     };
   };
 
+  // Filtre güncellenirken gecikmeli işlem yapan fonksiyon
   const debouncedUpdateFilter = useCallback(
     debounce((newFilter) => {
       dispatch(updateFilter(newFilter));
@@ -101,22 +102,25 @@ const ShopPage = () => {
     []
   );
 
+  // Filtreleme input alanı değiştirildiğinde çalışacak fonksiyon
   const handleFilterChange = (event) => {
     const newFilter = event.target.value;
-    dispatch(setFilter(newFilter));
+    dispatch(setFilter(newFilter)); // Filtre değerini Redux store'a kaydet
     debouncedUpdateFilter(newFilter);
   };
 
-  // Handle sort selection
+  // Sıralama işlemi değiştirildiğinde çalışacak fonksiyon
   const handleSortChange = (value) => {
     dispatch(updateSort(value));
     console.log("new sorting criterion: ", value);
   };
 
+  // Eğer veri çekiliyorsa ve ürün listesi boşsa, yükleme ekranı göster
   if (fetchState === "FETCHING" && productList.length === 0) {
     return <div>Loading...</div>;
   }
 
+  // Eğer veri çekme işlemi başarısız olursa, hata mesajı göster
   if (fetchState === "FAILED" && productList.length === 0) {
     return <div>Error loading data. Please try again.</div>;
   }
@@ -124,25 +128,18 @@ const ShopPage = () => {
   return (
     <>
       <div className="container max-w-[85vw] md:max-w-75vw mx-auto px-8 py-8 md:py-12">
-        {/* Header and Breadcrumb */}
+        {/* Sayfa başlığı ve breadcrumb */}
         <div className="flex flex-col md:flex-row items-center justify-between mb-6">
           <h3 className="text-xl md:text-2xl font-bold mb-2 md:mb-0">Shop</h3>
-
           <DynamicBreadcrumb gender={gender} categoryId={categoryId} />
         </div>
 
-        {/* Category Cards */}
+        {/* En popüler kategoriler */}
         <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-5 gap-3 md:gap-4 mb-8 md:mb-12">
           {topCategories.map((category) => (
             <Card
               key={category.id}
-              onClick={() =>
-                handleCategoryChange(
-                  category.id,
-                  category.gender,
-                  category.title
-                )
-              }
+              onClick={() => handleCategoryChange(category.id, category.gender, category.title)}
               className="relative overflow-hidden group cursor-pointer transition-all hover:scale-105"
             >
               <CardContent className="p-0">
@@ -169,102 +166,16 @@ const ShopPage = () => {
           ))}
         </div>
 
-        {/* Filter Controls - Mobile */}
-        <div className="md:hidden flex flex-col gap-4 mb-6">
-          <div className="flex flex-col justify-between items-center gap-4">
-            <span className="text-sm text-gray-500">
-              Showing {offset + 1} to {offset + productList.length} of {total}{" "}
-              results
-            </span>
+        {/* Ürün listeleme bileşeni */}
+        <ProductGrid fetchState={fetchState} productsWithCategories={productsWithCategories} />
 
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setShowMobileFilters(!showMobileFilters)}
-            >
-              <Filter className="h-4 w-4 mr-2" />
-              Filter
-            </Button>
-          </div>
-
-          {showMobileFilters && (
-            <div className="flex flex-col gap-3 p-4 bg-gray-50 rounded-lg">
-              <Select
-                value={sort}
-                onValueChange={handleSortChange}
-                className="w-full"
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Sort by" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="price:asc">Price: Low to High</SelectItem>
-                  <SelectItem value="price:desc">Price: High to Low</SelectItem>
-                  <SelectItem value="rating:asc">
-                    Rating: Low to High
-                  </SelectItem>
-                  <SelectItem value="rating:desc">
-                    Rating: High to Low
-                  </SelectItem>
-                </SelectContent>
-              </Select>
-              <Input
-                type="text"
-                placeholder="Filter products..."
-                value={filter}
-                onChange={handleFilterChange}
-                className="border rounded px-2 py-1"
-              />
-            </div>
-          )}
-        </div>
-
-        {/* Filter Controls - Desktop */}
-        <div className="hidden md:flex justify-between items-center mb-8">
-          <div className="text-sm text-gray-500">
-            Showing {offset + 1} to {offset + productList.length} of {total}{" "}
-            results
-          </div>
-          <div className="flex items-center gap-4">
-            <Select value={sort} onValueChange={handleSortChange}>
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Sort by" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="price:asc">Price: Low to High</SelectItem>
-                <SelectItem value="price:desc">Price: High to Low</SelectItem>
-                <SelectItem value="rating:asc">Rating: Low to High</SelectItem>
-                <SelectItem value="rating:desc">Rating: High to Low</SelectItem>
-              </SelectContent>
-            </Select>
-            <Input
-              type="text"
-              placeholder="Filter products..."
-              value={filter}
-              onInput={handleFilterChange}
-              className="border rounded px-2 py-1 w-[200px]"
-            />
-            <Button
-              variant="outline"
-              size="lg"
-              onClick={() => dispatch(updateFilter(""))}
-            >
-              Clear Filter
-            </Button>
-          </div>
-        </div>
-
-        {/* Product Grid */}
-        <ProductGrid
-          fetchState={fetchState}
-          productsWithCategories={productsWithCategories}
-        />
-
-        {/* Pagination */}
+        {/* Sayfalama bileşeni */}
         <div className="flex justify-center mb-2">
           <ShopPagination />
         </div>
       </div>
+
+      {/* Marka logoları */}
       <BrandLogos />
     </>
   );
